@@ -11,14 +11,12 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async findOneByEmail(email: string): Promise<User | null> {
-    const user = await this.userRepository.find({
-      select: ['id', 'email', 'created_at', 'updated_at'],
-      where: { email: email },
-      take: 1,
-    });
+  async create(createData: InputUserDto): Promise<User> {
+    return await this.userRepository.save(createData);
+  }
 
-    return user[0];
+  async findOneByEmail(email: string): Promise<User | null> {
+    return await this.userRepository.findOneBy({ email: email });
   }
 
   async update(id: number, updateData: InputUserDto): Promise<UpdateResult> {
